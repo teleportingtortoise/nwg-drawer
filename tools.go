@@ -339,7 +339,7 @@ func setUpCategories() {
 
 	dDir := dataDir()
 	for _, cName := range categoryNames {
-		fileName := fmt.Sprintf("%s.directory", cName)
+		fileName := cName + ".directory"
 		fp := filepath.Join(dDir, "desktop-directories", fileName)
 		lines, err := loadTextFile(fp)
 		if err == nil {
@@ -355,7 +355,7 @@ func setUpCategories() {
 					name = strings.Split(l, "=")[1]
 					continue
 				}
-				if strings.HasPrefix(l, fmt.Sprintf("Name[%s]=", strings.Split(*lang, "_")[0])) {
+				if strings.HasPrefix(l, "Name[" + strings.Split(*lang, "_")[0] + "]=") {
 					nameLoc = strings.Split(l, "=")[1]
 					continue
 				}
@@ -367,7 +367,7 @@ func setUpCategories() {
 
 			if nameLoc == "" {
 				for _, l := range lines {
-					if strings.HasPrefix(l, fmt.Sprintf("Name[%s]=", *lang)) {
+					if strings.HasPrefix(l, "Name[" + *lang + "]=") {
 						nameLoc = strings.Split(l, "=")[1]
 						break
 					}
