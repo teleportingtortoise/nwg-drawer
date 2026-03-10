@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"io/fs"
 	"path/filepath"
 	"strings"
+	"strconv"
 
 	"github.com/diamondburned/gotk4-layer-shell/pkg/gtklayershell"
 
@@ -582,8 +582,8 @@ func searchUserDir(dir string) {
 		}
 		fileSearchResultFlowBox.Hide()
 
-		statusLabel.SetText(fmt.Sprintf("%v results | LMB: xdg-open | RMB: file manager",
-			len(fileSearchResultFlowBox.Children())))
+		statusLabel.SetText(strconv.Itoa(len(fileSearchResultFlowBox.Children())) +
+			" results | LMB: xdg-open | RMB: file manager")
 		num := uint(len(fileSearchResultFlowBox.Children())) / *fsColumns
 		fileSearchResultFlowBox.SetMinChildrenPerLine(num + 1)
 		fileSearchResultFlowBox.SetMaxChildrenPerLine(num + 1)
@@ -724,7 +724,7 @@ func setUpOperationResultWindow(operation string, result string) *gtk.Window {
 	window.ShowAll()
 
 	if wayland() {
-		cmd := fmt.Sprintf("wl-copy %v", result)
+		cmd := "wl-copy " + result
 		launch(cmd, false, false)
 	}
 	return window
