@@ -66,7 +66,7 @@ func setUpPinnedFlowBox() *gtk.FlowBox {
 			cssName = strings.ToLower(stripSpecial.Replace(name))
 			if len(name) > 20 {
 				r := substring(name, 0, 17)
-				name = fmt.Sprintf("%s…", r)
+				name = r + "…"
 			}
 			btn.StyleContext().AddClass(cssName)
 			btn.SetLabel(name)
@@ -300,7 +300,7 @@ func flowBoxButton(entry desktopEntry) *gtk.Button {
 	cssName = strings.ToLower(stripSpecial.Replace(name))
 	if len(name) > 20 {
 		r := substring(name, 0, 17)
-		name = fmt.Sprintf("%s…", r)
+		name = r + "…"
 	}
 	button.StyleContext().AddClass(cssName)
 	button.SetLabel(name)
@@ -311,7 +311,7 @@ func flowBoxButton(entry desktopEntry) *gtk.Button {
 	desc := entry.CommentLoc
 	if len(desc) > 120 {
 		r := substring(desc, 0, 117)
-		desc = fmt.Sprintf("%s…", r)
+		desc = r + "…"
 	}
 
 	button.Connect("button-press-event", func() {
@@ -450,7 +450,7 @@ func walk(path string, d fs.DirEntry, e error) error {
 	if doSearch && strings.Contains(strings.ToLower(toSearch), strings.ToLower(phrase)) {
 		// mark directories
 		if d.IsDir() {
-			fileSearchResults = append(fileSearchResults, fmt.Sprintf("#is_dir#%s", path))
+			fileSearchResults = append(fileSearchResults, "#is_dir#" + path)
 		} else {
 			fileSearchResults = append(fileSearchResults, path)
 		}
@@ -590,7 +590,7 @@ func searchUserDir(dir string) {
 	filepath.WalkDir(userDirsMap[dir], walk)
 
 	if len(fileSearchResults) > 0 {
-		btn := setUpUserDirButton(fmt.Sprintf("folder-%s", dir), "", dir, userDirsMap)
+		btn := setUpUserDirButton("folder-" + dir, "", dir, userDirsMap)
 		fileSearchResultFlowBox.Add(btn)
 		btn.Parent().(*gtk.FlowBoxChild).SetCanFocus(false)
 
@@ -633,7 +633,7 @@ func setUpUserDirButton(iconName, displayName, entryName string, userDirsMap map
 	button.SetImage(img)
 
 	if len(displayName) > *nameLimit {
-		displayName = fmt.Sprintf("%s…", displayName[:*nameLimit-3])
+		displayName = displayName[:*nameLimit-3] + "…"
 	}
 	button.SetLabel(displayName)
 	button.StyleContext().AddClass(strings.ToLower(displayName))
@@ -680,7 +680,7 @@ func setUpUserFileSearchResultButton(fileName, filePath string) *gtk.Box {
 	tooltipText := ""
 	if len(fileName) > *nameLimit {
 		tooltipText = fileName
-		fileName = fmt.Sprintf("%s…", fileName[:*nameLimit-3])
+		fileName = fileName[:*nameLimit-3] + "…"
 	}
 
 	if button == nil || button.Native() == 0 {
@@ -745,7 +745,7 @@ func setUpOperationResultWindow(operation string, result string) *gtk.Window {
 
 	vBox := gtk.NewBox(gtk.OrientationHorizontal, 5)
 	outerVBox.PackStart(vBox, true, true, 6)
-	lbl := gtk.NewLabel(fmt.Sprintf("%s = %s", operation, result))
+	lbl := gtk.NewLabel(operation + " = " + result)
 	lbl.SetObjectProperty("name", "math-label")
 	vBox.PackStart(lbl, true, true, 12)
 
