@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/joshuarubin/go-sway"
 	log "github.com/sirupsen/logrus"
 	"io"
@@ -17,6 +16,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -79,8 +79,8 @@ func mapXdgUserDirs() map[string]string {
 
 	userDirsFile := filepath.Join(filepath.Join(configHome(), "user-dirs.dirs"))
 	if pathExists(userDirsFile) {
-		log.Debugf("userDirsFile found: %s", userDirsFile)
-		log.Info(fmt.Sprintf("Using XDG user dirs from %s", userDirsFile))
+		log.Debug("userDirsFile found: " + userDirsFile)
+		log.Info("Using XDG user dirs from " + userDirsFile)
 		lines, _ := loadTextFile(userDirsFile)
 		for _, l := range lines {
 			if strings.HasPrefix(l, "XDG_DOCUMENTS_DIR") {
@@ -180,7 +180,7 @@ func dataHome() string {
 		dir = path.Join(home, ".local/share/nwg-drawer")
 	}
 
-	log.Debugf("Data home: %s", dir)
+	log.Debug("Data home: " + dir)
 	createDir(dir)
 
 	return dir
@@ -426,7 +426,7 @@ func parseDesktopFiles(desktopFiles []string) string {
 	sort.Slice(desktopEntries, func(i, j int) bool {
 		return strings.ToLower(desktopEntries[i].NameLoc) < strings.ToLower(desktopEntries[j].NameLoc)
 	})
-	summary := fmt.Sprintf("%v entries (+%v hidden)", len(desktopEntries)-hidden, hidden)
+	summary := strconv.Itoa(len(desktopEntries) - hidden) + " entries (+" + strconv.Itoa(hidden) + " hidden)"
 	log.Infof("Skipped %v duplicates; %v .desktop entries hidden by \"NoDisplay=true\"", skipped, hidden)
 	return summary
 }
@@ -590,7 +590,7 @@ func launch(command string, terminal bool, terminate bool) {
 		}
 
 		if themeToPrepend != "" {
-			command = fmt.Sprintf("GTK_THEME=%q %s", themeToPrepend, command)
+			command = "GTK_THEME=" + strconv.QuoteToASCII(themeToPrepend) + " " + command
 		}
 	} else {
 		if *forceTheme {
@@ -641,7 +641,7 @@ func launch(command string, terminal bool, terminate bool) {
 		}
 	}
 
-	msg := fmt.Sprintf("Executing command: %q; args: %q\n", cmd.Args[0], cmd.Args[1:])
+	msg := "Executing command: \"" + cmd.Args[0] + "\"; args: [\"" + strings.Join(cmd.Args[1:], "\" \"") + "\"]\n"
 	log.Info(msg)
 
 	cmd.SysProcAttr = &syscall.SysProcAttr{
@@ -675,7 +675,7 @@ func open(filePath string, xdgOpen bool) {
 		for key, element := range preferredApps {
 			r, err := regexp.Compile(key)
 			if err == nil && r.MatchString(filePath) {
-				cmd = exec.Command(fmt.Sprintf("%v", element), filePath)
+				cmd = exec.Command(strconv.Itoa(element.(int)), filePath)
 				break
 			}
 		}
@@ -774,12 +774,12 @@ func hyprctl(cmd string) ([]byte, error) {
 	xdgRuntimeDir := os.Getenv("XDG_RUNTIME_DIR")
 	hyprDir := ""
 	if xdgRuntimeDir != "" {
-		hyprDir = fmt.Sprintf("%s/hypr", xdgRuntimeDir)
+		hyprDir = xdgRuntimeDir + "/hypr"
 	} else {
 		hyprDir = "/tmp/hypr"
 	}
 
-	socketFile := fmt.Sprintf("%s/%s/.socket.sock", hyprDir, his)
+	socketFile := hyprDir + "/" + his + "/.socket.sock"
 	conn, err := net.Dial("unix", socketFile)
 	if err != nil {
 		return nil, err

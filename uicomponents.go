@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"io/fs"
 	"path/filepath"
 	"strings"
+	"strconv"
 
 	"github.com/diamondburned/gotk4-layer-shell/pkg/gtklayershell"
 
@@ -37,7 +37,7 @@ func setUpPinnedFlowBox() *gtk.FlowBox {
 		for _, desktopID := range pinned {
 			entry := id2entry[desktopID]
 			if entry.DesktopID == "" {
-				log.Debugf("Pinned item doesn't seem to exist: %s", desktopID)
+				log.Debug("Pinned item doesn't seem to exist: " + desktopID)
 				continue
 			}
 
@@ -56,7 +56,7 @@ func setUpPinnedFlowBox() *gtk.FlowBox {
 			btn.SetAlwaysShowImage(true)
 			btn.SetImagePosition(gtk.PosTop)
 
-			name := ""
+			var name string
 			cssName := ""
 			if entry.NameLoc != "" {
 				name = entry.NameLoc
@@ -211,7 +211,7 @@ func setUpAppsFlowBox(categoryList []string, searchPhrase string) *gtk.FlowBox {
 		appFlowBox.Destroy()
 		appFlowBox = nil
 	} else {
-		log.Debugf("Skipping appFlowBox.Destroy(); already invalid or nil")
+		log.Debug("Skipping appFlowBox.Destroy(); already invalid or nil")
 		appFlowBox = nil // to make sure
 	}
 	if  appHWrapper != nil && appHWrapper.Widget.Native() != 0 {
@@ -439,7 +439,7 @@ func walk(path string, d fs.DirEntry, e error) error {
 	// Remaining part of the path (w/o file name) must be checked against being present in excluded dirs
 	doSearch := true
 	parts := strings.Split(toSearch, "/")
-	remainingPart := ""
+	var remainingPart string
 	if len(parts) > 1 {
 		remainingPart = strings.Join(parts[:len(parts)-1], "/")
 	}
@@ -479,7 +479,7 @@ func setUpSearchEntry() *gtk.SearchEntry {
 					appFlowBox.Destroy()
 					appFlowBox = nil
 				} else {
-					log.Debugf("Skipping appFlowBox.Destroy(); already invalid or nil")
+					log.Debug("Skipping appFlowBox.Destroy(); already invalid or nil")
 					appFlowBox = nil
 				}
 				if pinnedFlowBox != nil && pinnedFlowBox.Visible() {
@@ -595,7 +595,7 @@ func searchUserDir(dir string) {
 		btn.Parent().(*gtk.FlowBoxChild).SetCanFocus(false)
 
 		for _, path := range fileSearchResults {
-			log.Debugf("Path: %s", path)
+			log.Debug("Path: " + path)
 			partOfPathToShow := strings.Split(path, userDirsMap[dir])[1]
 			if partOfPathToShow != "" {
 				if !(strings.HasPrefix(path, "#is_dir#") && isExcluded(path)) {
@@ -610,8 +610,8 @@ func searchUserDir(dir string) {
 		}
 		fileSearchResultFlowBox.Hide()
 
-		statusLabel.SetText(fmt.Sprintf("%v results | LMB: xdg-open | RMB: file manager",
-			len(fileSearchResultFlowBox.Children())))
+		statusLabel.SetText(strconv.Itoa(len(fileSearchResultFlowBox.Children())) +
+			" results | LMB: xdg-open | RMB: file manager")
 		num := uint(len(fileSearchResultFlowBox.Children())) / *fsColumns
 		fileSearchResultFlowBox.SetMinChildrenPerLine(num + 1)
 		fileSearchResultFlowBox.SetMaxChildrenPerLine(num + 1)
@@ -677,7 +677,7 @@ func setUpUserFileSearchResultButton(fileName, filePath string) *gtk.Box {
 		button.SetImage(img)
 	}
 
-	tooltipText := ""
+	var tooltipText string
 	if len(fileName) > *nameLimit {
 		tooltipText = fileName
 		fileName = fileName[:*nameLimit-3] + "…"
@@ -761,7 +761,7 @@ func setUpOperationResultWindow(operation string, result string) *gtk.Window {
 	window.ShowAll()
 
 	if wayland() {
-		cmd := fmt.Sprintf("wl-copy %v", result)
+		cmd := "wl-copy " + result
 		launch(cmd, false, false)
 	}
 	return window
