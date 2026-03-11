@@ -55,7 +55,7 @@ func setUpPinnedFlowBox() *gtk.FlowBox {
 			btn.SetAlwaysShowImage(true)
 			btn.SetImagePosition(gtk.PosTop)
 
-			name := ""
+			var name string
 			if entry.NameLoc != "" {
 				name = entry.NameLoc
 			} else {
@@ -411,7 +411,7 @@ func walk(path string, d fs.DirEntry, e error) error {
 	// Remaining part of the path (w/o file name) must be checked against being present in excluded dirs
 	doSearch := true
 	parts := strings.Split(toSearch, "/")
-	remainingPart := ""
+	var remainingPart string
 	if len(parts) > 1 {
 		remainingPart = strings.Join(parts[:len(parts)-1], "/")
 	}
@@ -640,7 +640,7 @@ func setUpUserFileSearchResultButton(fileName, filePath string) *gtk.Box {
 		button.SetImage(img)
 	}
 
-	tooltipText := ""
+	var tooltipText string
 	if len(fileName) > *nameLimit {
 		tooltipText = fileName
 		fileName = fileName[:*nameLimit-3] + "…"
