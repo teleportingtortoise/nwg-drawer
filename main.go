@@ -205,7 +205,7 @@ func main() {
 	}
 
 	if *displayVersion {
-		fmt.Printf("nwg-drawer version %s\n", version)
+		log.Print("nwg-drawer version " + version + "\n")
 		os.Exit(0)
 	}
 

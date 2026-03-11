@@ -37,7 +37,7 @@ func setUpPinnedFlowBox() *gtk.FlowBox {
 		for _, desktopID := range pinned {
 			entry := id2entry[desktopID]
 			if entry.DesktopID == "" {
-				log.Debugf("Pinned item doesn't seem to exist: %s", desktopID)
+				log.Debug("Pinned item doesn't seem to exist: " + desktopID)
 				continue
 			}
 
@@ -202,7 +202,7 @@ func setUpAppsFlowBox(categoryList []string, searchPhrase string) *gtk.FlowBox {
 		appFlowBox.Destroy()
 		appFlowBox = nil
 	} else {
-		log.Debugf("Skipping appFlowBox.Destroy(); already invalid or nil")
+		log.Debug("Skipping appFlowBox.Destroy(); already invalid or nil")
 		appFlowBox = nil // to make sure
 	}
 	flowBox := gtk.NewFlowBox()
@@ -451,7 +451,7 @@ func setUpSearchEntry() *gtk.SearchEntry {
 					appFlowBox.Destroy()
 					appFlowBox = nil
 				} else {
-					log.Debugf("Skipping appFlowBox.Destroy(); already invalid or nil")
+					log.Debug("Skipping appFlowBox.Destroy(); already invalid or nil")
 					appFlowBox = nil
 				}
 				if pinnedFlowBox != nil && pinnedFlowBox.Visible() {
@@ -567,7 +567,7 @@ func searchUserDir(dir string) {
 		btn.Parent().(*gtk.FlowBoxChild).SetCanFocus(false)
 
 		for _, path := range fileSearchResults {
-			log.Debugf("Path: %s", path)
+			log.Debug("Path: " + path)
 			partOfPathToShow := strings.Split(path, userDirsMap[dir])[1]
 			if partOfPathToShow != "" {
 				if !(strings.HasPrefix(path, "#is_dir#") && isExcluded(path)) {
