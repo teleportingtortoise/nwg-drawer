@@ -769,6 +769,30 @@ func substring(s string, start int, end int) string {
 	return s[startStrIdx:]
 }
 
+// used to check the type for expr.eval results
+// still adding types
+func anyToString(result any) string {
+	log.Infof("%v", result)
+	var tostring string
+	if i, ok := result.(int); ok {
+		tostring = strconv.Itoa(i)
+	}
+	if f, ok := result.(float64); ok {
+		tostring = strconv.FormatFloat(f, 'e', -1, 64)
+	}
+	if b, ok := result.(bool); ok {
+		tostring = strconv.FormatBool(b)
+	}
+	if s, ok := result.(string); ok {
+		tostring = s
+	}
+	if a, ok := result.([]interface {}); ok {
+		log.Infof("%v", a)
+	}
+
+	return tostring
+}
+
 func hyprctl(cmd string) ([]byte, error) {
 	his := os.Getenv("HYPRLAND_INSTANCE_SIGNATURE")
 	xdgRuntimeDir := os.Getenv("XDG_RUNTIME_DIR")
