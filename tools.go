@@ -641,7 +641,7 @@ func launch(command string, terminal bool, terminate bool) {
 		}
 	}
 
-	msg := "Executing command: \"" + cmd.Args[0] + "\"; args: " + cmd.Args[1] + "\n"
+	msg := "Executing command: \"" + cmd.Args[0] + "\"; args: \"" + strings.Join(cmd.Args[1:], "\", \"") + "\"\n"
 	log.Info(msg)
 
 	cmd.SysProcAttr = &syscall.SysProcAttr{
