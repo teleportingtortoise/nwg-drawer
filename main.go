@@ -521,6 +521,8 @@ func main() {
 					result, e := expr.Eval(s, nil)
 					if e == nil {
 						log.Debugf("Setting up mathemathical operation result window. Operation: %s, result: %v", s, result)
+						// result can output any number of kinds of values that need to be handled differently
+						// may be more work and trouble to do than to leave in this one instance of fmt
 						mathResultWindow = setUpOperationResultWindow(s, fmt.Sprintf("%v", result))
 					}
 				}
