@@ -743,7 +743,7 @@ func main() {
 	}
 
 	t := time.Now()
-	log.Info("UI created in " + (string)(t.Sub(timeStart).Milliseconds()) + " ms. Thank you for your patience.")
+	log.Info("UI created in " + strconv.Itoa((int)(t.Sub(timeStart).Milliseconds())) + " ms. Thank you for your patience.")
 
 	// Check if showing the window has been requested (SIGUSR1)
 	go func() {
@@ -863,5 +863,5 @@ func restoreStateAndHide() {
 		resultWindow.VAdjustment().SetValue(0)
 	}
 
-	log.Debugf("UI hidden and restored in " + (string)(time.Since(timeStart).Milliseconds()) + " ms")
+	log.Debug("UI hidden and restored in " + strconv.Itoa((int)(time.Since(timeStart).Milliseconds())) + " ms")
 }
