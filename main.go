@@ -295,7 +295,7 @@ func main() {
 					gtk.MainQuit()
 				}
 			default:
-				log.Infof("Unknown signal: %s", s.String())
+				log.Info("Unknown signal: " + s.String())
 			}
 		}
 	}()
@@ -313,17 +313,17 @@ func main() {
 			i, err := strconv.Atoi(pid)
 			if err == nil {
 				if *resident {
-					log.Warnf("Resident instance already running (PID %v)", i)
+					log.Warn("Resident instance already running (PID " + pid + ")")
 				} else {
 					var err error
 					if *flagDrawerClose {
-						log.Infof("Closing resident instance (PID %v)", i)
+						log.Info("Closing resident instance (PID " + pid + ")")
 						err = syscall.Kill(i, SIG25)
 					} else if *flagDrawerOpen {
-						log.Infof("Showing resident instance (PID %v)", i)
+						log.Info("Showing resident instance (PID " + pid + ")")
 						err = syscall.Kill(i, syscall.SIGUSR2)
 					} else {
-						log.Infof("Toggling resident instance (PID %v)", i)
+						log.Info("Toggling resident instance (PID " + pid + ")")
 						err = syscall.Kill(i, syscall.SIGUSR1)
 					}
 					if err != nil {
@@ -336,7 +336,7 @@ func main() {
 	}
 	defer lockFile.Close()
 
-	log.Infof("term: %s", *term)
+	log.Info("term: " + *term)
 
 	// LANGUAGE
 	if *lang == "" && os.Getenv("LANG") != "" {
@@ -354,7 +354,7 @@ func main() {
 	if err == nil {
 		for _, p := range []string{"drawer.css", "preferred-apps.json"} {
 			if pathExists(path.Join(oldConfigDirectory, p)) {
-				log.Infof("File %s found in stale location, moving to %s", p, configDirectory)
+				log.Info("File " + p + " found in stale location, moving to " + configDirectory)
 				if !pathExists(path.Join(configDirectory, p)) {
 					err = os.Rename(path.Join(oldConfigDirectory, p), path.Join(configDirectory, p))
 					if err == nil {
@@ -363,7 +363,7 @@ func main() {
 						log.Warn(err)
 					}
 				} else {
-					log.Warnf("Failed moving %s to %s: path already exists!", path.Join(oldConfigDirectory, p), path.Join(configDirectory, p))
+					log.Warn("Failed moving " + path.Join(oldConfigDirectory, p) + " to " + path.Join(configDirectory, p) + ": path already exists!")
 				}
 
 			}
@@ -411,12 +411,12 @@ func main() {
 	if pathExists(paFile) {
 		preferredApps, err = loadPreferredApps(paFile)
 		if err != nil {
-			log.Infof("Custom associations file %s not found or invalid", paFile)
+			log.Info("Custom associations file " + paFile + " not found or invalid")
 		} else {
-			log.Infof("Found %v associations in %s", len(preferredApps), paFile)
+			log.Info("Found " + (string)(len(preferredApps)) + " associations in " + paFile)
 		}
 	} else {
-		log.Infof("%s file not found", paFile)
+		log.Info(paFile + " file not found")
 	}
 
 	// Load user-defined paths excluded from file search
@@ -424,12 +424,12 @@ func main() {
 	if pathExists(exFile) {
 		exclusions, err = loadTextFile(exFile)
 		if err != nil {
-			log.Infof("Search exclusions file %s not found %s", exFile, err)
+			log.Info("Search exclusions file " + exFile + " not found " + err.Error())
 		} else {
-			log.Infof("Found %v search exclusions in %s", len(exclusions), exFile)
+			log.Info("Found " + (string)(len(exclusions)) + " search exclusions in " + exFile)
 		}
 	} else {
-		log.Infof("%s file not found", exFile)
+		log.Info(exFile + " file not found")
 	}
 
 	// USER INTERFACE
@@ -438,7 +438,7 @@ func main() {
 	settings := gtk.SettingsGetDefault()
 	if *gtkTheme != "" {
 		settings.SetObjectProperty("gtk-theme-name", *gtkTheme)
-		log.Infof("User demanded theme: %s", *gtkTheme)
+		log.Info("User demanded theme: " + *gtkTheme)
 	} else {
 		settings.SetObjectProperty("gtk-application-prefer-dark-theme", true)
 		log.Info("Preferring dark theme variants")
@@ -446,7 +446,7 @@ func main() {
 
 	if *gtkIconTheme != "" {
 		settings.SetObjectProperty("gtk-icon-theme-name", *gtkIconTheme)
-		log.Infof("User demanded icon theme: %s", *gtkIconTheme)
+		log.Info("User demanded icon theme: " + *gtkIconTheme)
 	}
 
 	cssProvider := gtk.NewCSSProvider()
@@ -912,5 +912,5 @@ func restoreStateAndHide() {
 		resultWindow.VAdjustment().SetValue(0)
 	}
 
-	log.Debugf("UI hidden and restored in %d ms", time.Since(timeStart).Milliseconds())
+	log.Debug("UI hidden and restored in " + strconv.Itoa((int)(time.Since(timeStart).Milliseconds())) + " ms")
 }

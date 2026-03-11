@@ -104,7 +104,7 @@ func mapXdgUserDirs() map[string]string {
 			}
 		}
 	} else {
-		log.Warnf("userDirsFile %s not found, using defaults", userDirsFile)
+		log.Warn("userDirsFile " + userDirsFile + " not found, using defaults")
 	}
 
 	return result
@@ -159,7 +159,7 @@ func configDir() string {
 		dir = path.Join(home, ".config/nwg-drawer")
 	}
 
-	log.Infof("Config dir: %s", dir)
+	log.Info("Config dir: " + dir)
 	createDir(dir)
 
 	return dir
@@ -190,13 +190,13 @@ func createDir(dir string) {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err := os.MkdirAll(dir, os.ModePerm)
 		if err == nil {
-			log.Infof("Creating dir: %s", dir)
+			log.Info("Creating dir: " + dir)
 		}
 	}
 }
 
 func copyFile(src, dst string) error {
-	log.Infof("Copying: '%s' => '%s'", src, dst)
+	log.Info("Copying: '" + src + "' => '" + dst + "'")
 
 	var err error
 	var srcfd *os.File
@@ -241,11 +241,11 @@ func dataDir() string {
 		p := filepath.Join(d, "nwg-drawer")
 		q := filepath.Join(p, "desktop-directories")
 		if pathExists(q) {
-			log.Infof("Data dir: %v", p)
+			log.Info("Data dir: " + p)
 			return p
 		}
 	}
-	log.Warnf("Data dir not found")
+	log.Warn("Data dir not found")
 	return ""
 }
 
@@ -427,7 +427,7 @@ func parseDesktopFiles(desktopFiles []string) string {
 		return strings.ToLower(desktopEntries[i].NameLoc) < strings.ToLower(desktopEntries[j].NameLoc)
 	})
 	summary := strconv.Itoa(len(desktopEntries) - hidden) + " entries (+" + strconv.Itoa(hidden) + " hidden)"
-	log.Infof("Skipped %v duplicates; %v .desktop entries hidden by \"NoDisplay=true\"", skipped, hidden)
+	log.Info("Skipped " + strconv.Itoa(skipped) + " duplicates; " + strconv.Itoa(hidden) + " .desktop entries hidden by \"NoDisplay=true\"")
 	return summary
 }
 
@@ -520,20 +520,20 @@ func loadTextFile(path string) ([]string, error) {
 func pinItem(itemID string) {
 	for _, item := range pinned {
 		if item == itemID {
-			log.Warnf("%s already pinned", itemID)
+			log.Warn(itemID + " already pinned")
 			return
 		}
 	}
 	pinned = append(pinned, itemID)
 	savePinned()
-	log.Infof("%s pinned", itemID)
+	log.Info(itemID + " pinned")
 }
 
 func unpinItem(itemID string) {
 	if isIn(pinned, itemID) {
 		pinned = remove(pinned, itemID)
 		savePinned()
-		log.Infof("%s unpinned", itemID)
+		log.Info(itemID + " unpinned")
 	}
 }
 
@@ -682,7 +682,7 @@ func open(filePath string, xdgOpen bool) {
 	} else {
 		cmd = exec.Command(*fileManager, filePath)
 	}
-	log.Infof("Executing: %s", cmd)
+	log.Info("Executing: " + cmd.Path + strings.Join(cmd.Args[:], " ") )
 
 	if cmd.Start() != nil {
 		log.Warn("Unable to execute command!")

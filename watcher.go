@@ -20,12 +20,12 @@ func watchFiles() {
 	defer watcher.Close()
 
 	if err := watcher.Add(pinnedFile); err != nil {
-		log.Errorf("ERROR: %s", err)
+		log.Error("ERROR: " + err.Error())
 	}
 
 	for _, fp := range appDirs {
 		if err := filepath.Walk(fp, watchDir); err != nil {
-			log.Errorf("ERROR: %s", err)
+			log.Error("ERROR: " + err.Error())
 		}
 	}
 
@@ -47,7 +47,7 @@ func watchFiles() {
 				}
 
 			case err := <-watcher.Errors:
-				log.Errorf("ERROR: %s", err)
+				log.Error("ERROR: " + err.Error())
 			}
 		}
 	}()

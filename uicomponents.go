@@ -278,13 +278,13 @@ func flowBoxButton(entry desktopEntry) *gtk.Button {
 	if entry.Icon != "" {
 		pixbuf, err = createPixbuf(entry.Icon, *iconSize)
 		if err != nil || pixbuf == nil {
-			log.Warnf("Cannot load icon %q for %q: %v", entry.Icon, entry.Name, err)
+			log.Warn("Cannot load icon " + strconv.Quote(entry.Icon) + " for " + strconv.Quote(entry.Name) +": " + err.Error())
 			img = gtk.NewImageFromIconName("image-missing", int(gtk.IconSizeDialog))
 		} else {
 			img = gtk.NewImageFromPixbuf(pixbuf)
 		}
 	} else {
-		log.Warnf("Undefined icon for %s", entry.Name)
+		log.Warn("Undefined icon for " + entry.Name)
 		img = gtk.NewImageFromIconName("image-missing", int(gtk.IconSizeDialog))
 	}
 
@@ -358,7 +358,7 @@ func powerButton(iconPathOrName, command string) *gtk.Button {
 		pixbuf, err = gdkpixbuf.NewPixbufFromFileAtSize(iconPathOrName, *pbSize, *pbSize)
 		if err != nil {
 			pixbuf, _ = createPixbuf("unknown", *pbSize)
-			log.Warnf("Couldn't find icon %s", iconPathOrName)
+			log.Warn("Couldn't find icon " + iconPathOrName)
 		}
 		img = gtk.NewImageFromPixbuf(pixbuf)
 	} else {
