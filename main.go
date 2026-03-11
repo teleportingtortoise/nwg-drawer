@@ -306,7 +306,7 @@ func main() {
 	if *lang == "" && os.Getenv("LANG") != "" {
 		*lang = strings.Split(os.Getenv("LANG"), ".")[0]
 	}
-	log.Info(fmt.Sprintf("lang: %s", *lang))
+	log.Info("lang: " + *lang)
 
 	// ENVIRONMENT
 	configDirectory = configDir()
@@ -354,7 +354,7 @@ func main() {
 		pinned = nil
 		savePinned()
 	}
-	log.Info(fmt.Sprintf("Found %v pinned items", len(pinned)))
+	log.Info("Found " + strconv.Itoa(len(pinned)) + " pinned items")
 
 	if !strings.HasPrefix(*cssFileName, "/") {
 		*cssFileName = filepath.Join(configDirectory, *cssFileName)
@@ -365,7 +365,7 @@ func main() {
 	setUpCategories()
 
 	desktopFiles := listDesktopFiles()
-	log.Info(fmt.Sprintf("Found %v desktop files", len(desktopFiles)))
+	log.Info("Found " + strconv.Itoa(len(desktopFiles)) + " desktop files")
 
 	status = parseDesktopFiles(desktopFiles)
 
@@ -419,7 +419,7 @@ func main() {
 	if err != nil {
 		log.Errorf("ERROR: %s css file not found or erroneous. Using GTK styling.", *cssFileName)
 	} else {
-		log.Info(fmt.Sprintf("Using style from %s", *cssFileName))
+		log.Info("Using style from " + *cssFileName)
 		screen := gdk.ScreenGetDefault()
 		gtk.StyleContextAddProviderForScreen(screen, cssProvider, gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 	}
@@ -741,7 +741,7 @@ func main() {
 	}
 
 	t := time.Now()
-	log.Info(fmt.Sprintf("UI created in %v ms. Thank you for your patience.", t.Sub(timeStart).Milliseconds()))
+	log.Info("UI created in " + strconv.Itoa((int)(t.Sub(timeStart).Milliseconds())) + " ms. Thank you for your patience.")
 
 	// Check if showing the window has been requested (SIGUSR1)
 	go func() {
