@@ -641,7 +641,7 @@ func launch(command string, terminal bool, terminate bool) {
 		}
 	}
 
-	msg := fmt.Sprintf("Executing command: %q; args: %q\n", cmd.Args[0], cmd.Args[1:])
+	msg := "Executing command: \"" + cmd.Args[0] + "\"; args: " + cmd.Args[1] + "\n"
 	log.Info(msg)
 
 	cmd.SysProcAttr = &syscall.SysProcAttr{
