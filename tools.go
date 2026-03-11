@@ -104,7 +104,7 @@ func mapXdgUserDirs() map[string]string {
 			}
 		}
 	} else {
-		log.Warnf("userDirsFile %s not found, using defaults", userDirsFile)
+		log.Warn("userDirsFile " + userDirsFile + " not found, using defaults")
 	}
 
 	return result
@@ -682,7 +682,7 @@ func open(filePath string, xdgOpen bool) {
 	} else {
 		cmd = exec.Command(*fileManager, filePath)
 	}
-	log.Info("Executing: " + strconv.Quote(*fileManager) + " " + filePath)
+	log.Info("Executing: " + cmd.Path + strings.Join(cmd.Args[:], " ") )
 
 	if cmd.Start() != nil {
 		log.Warn("Unable to execute command!")

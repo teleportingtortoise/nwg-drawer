@@ -265,7 +265,7 @@ func flowBoxButton(entry desktopEntry) *gtk.Button {
 			img = gtk.NewImageFromPixbuf(pixbuf)
 		}
 	} else {
-		log.Warnf("Undefined icon for %s", entry.Name)
+		log.Warn("Undefined icon for " + entry.Name)
 		img = gtk.NewImageFromIconName("image-missing", int(gtk.IconSizeDialog))
 	}
 
@@ -331,7 +331,7 @@ func powerButton(iconPathOrName, command string) *gtk.Button {
 		pixbuf, err = gdkpixbuf.NewPixbufFromFileAtSize(iconPathOrName, *pbSize, *pbSize)
 		if err != nil {
 			pixbuf, _ = createPixbuf("unknown", *pbSize)
-			log.Warnf("Couldn't find icon %s", iconPathOrName)
+			log.Warn("Couldn't find icon " + iconPathOrName)
 		}
 		img = gtk.NewImageFromPixbuf(pixbuf)
 	} else {
