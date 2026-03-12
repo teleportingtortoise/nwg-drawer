@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/joshuarubin/go-sway"
 	log "github.com/sirupsen/logrus"
 	"io"
@@ -769,28 +770,10 @@ func substring(s string, start int, end int) string {
 	return s[startStrIdx:]
 }
 
-// used to check the type for expr.eval results
-// still adding types
-func anyToString(result any) string {
-	log.Infof("%v", result)
-	var tostring string
-	if i, ok := result.(int); ok {
-		tostring = strconv.Itoa(i)
-	}
-	if f, ok := result.(float64); ok {
-		tostring = strconv.FormatFloat(f, 'e', -1, 64)
-	}
-	if b, ok := result.(bool); ok {
-		tostring = strconv.FormatBool(b)
-	}
-	if s, ok := result.(string); ok {
-		tostring = s
-	}
-	if a, ok := result.([]interface {}); ok {
-		log.Infof("%v", a)
-	}
-
-	return tostring
+// generic handler for the areas where fmt is the simplest solution
+func anyToString(result any, strtype string) string {
+	s := fmt.Sprintf(strtype, result)
+	return s
 }
 
 func hyprctl(cmd string) ([]byte, error) {

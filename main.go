@@ -519,8 +519,8 @@ func main() {
 					// and copy to the clipboard with wl-copy.
 					result, e := expr.Eval(s, nil)
 					if e == nil {
-						log.Debug("Setting up mathemathical operation result window. Operation: " + s + ", result: " + anyToString(result))
-						mathResultWindow = setUpOperationResultWindow(s, anyToString(result))
+						log.Debug("Setting up mathemathical operation result window. Operation: " + s + ", result: " + anyToString(result, "%v"))
+						mathResultWindow = setUpOperationResultWindow(s, anyToString(result, "%v"))
 					}
 				}
 			}
