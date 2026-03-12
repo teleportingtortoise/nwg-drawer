@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/joshuarubin/go-sway"
 	log "github.com/sirupsen/logrus"
 	"io"
@@ -767,6 +768,12 @@ func substring(s string, start int, end int) string {
 		i++
 	}
 	return s[startStrIdx:]
+}
+
+// generic handler for the area where fmt is the simplest solution
+func anyToString(result any, strtype string) string {
+	s := fmt.Sprintf(strtype, result)
+	return s
 }
 
 func hyprctl(cmd string) ([]byte, error) {
