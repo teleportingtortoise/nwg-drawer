@@ -299,7 +299,7 @@ func flowBoxButton(entry desktopEntry) *gtk.Button {
 				launch(exec, terminal, true)
 				return true
 			}
-		} else if btnEvent.Button() == 3 {
+		} else if btnEvent.Button() == 3 && !*noPins {
 			pinItem(ID)
 			return true
 		}
@@ -534,7 +534,7 @@ func setUpSearchEntry() *gtk.SearchEntry {
 				fileSearchResultWrapper.Hide()
 			}
 
-			if !pinnedFlowBox.Visible() {
+			if pinnedFlowBox != nil && !pinnedFlowBox.Visible() {
 				pinnedFlowBox.ShowAll()
 			}
 
