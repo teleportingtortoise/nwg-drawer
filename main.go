@@ -194,6 +194,7 @@ var pbSleep = flag.String("pbsleep", "", "command for the sleep power bar icon")
 var pbSize = flag.Int("pbsize", 64, "power bar icon size (only works w/ built-in icons)")
 var pbUseIconTheme = flag.Bool("pbuseicontheme", false, "use icon theme instead of built-in icons in power bar")
 var closeBtn = flag.String("closebtn", "none", "close button position: 'left' or 'right', 'none' by default")
+var skipEmpty = flag.Bool("skipempty", false, "hide empty elements, may affect appearance of cutom CSS")
 var debug = flag.Bool("d", false, "Turn on Debug messages")
 
 func main() {
@@ -580,10 +581,9 @@ func main() {
 		outerVBox.PackStart(categoriesWrapper, false, false, 0)
 	}
 
-	// This is unused. Only skip when debugging as some user may be styling this
-	if !*debug {
+	// This is empty. Skip if skipEmpty is set to true, for backwards compatibility
+	if !*skipEmpty {
 		pinnedWrapper := gtk.NewBox(gtk.OrientationHorizontal, 0)
-		pinnedWrapper.SetObjectProperty("name", "broken")
 		outerVBox.PackStart(pinnedWrapper, false, false, 0)
 	}
 
