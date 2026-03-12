@@ -580,8 +580,12 @@ func main() {
 		outerVBox.PackStart(categoriesWrapper, false, false, 0)
 	}
 
-	pinnedWrapper := gtk.NewBox(gtk.OrientationHorizontal, 0)
-	outerVBox.PackStart(pinnedWrapper, false, false, 0)
+	// This is unused. Only skip when debugging as some user may be styling this
+	if !*debug {
+		pinnedWrapper := gtk.NewBox(gtk.OrientationHorizontal, 0)
+		pinnedWrapper.SetObjectProperty("name", "broken")
+		outerVBox.PackStart(pinnedWrapper, false, false, 0)
+	}
 
 	pinnedFlowBoxWrapper = gtk.NewBox(gtk.OrientationHorizontal, 0)
 	outerVBox.PackStart(pinnedFlowBoxWrapper, false, false, 0)

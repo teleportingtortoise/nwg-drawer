@@ -38,3 +38,9 @@ button:hover {
     font-weight: bold;
     font-size: 16px
 }
+
+#broken {
+    border-width: 2pt;
+    border-style: dashed;
+    border-color: red;
+}
