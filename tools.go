@@ -770,7 +770,7 @@ func substring(s string, start int, end int) string {
 	return s[startStrIdx:]
 }
 
-// generic handler for the areas where fmt is the simplest solution
+// generic handler for the area where fmt is the simplest solution
 func anyToString(result any, strtype string) string {
 	s := fmt.Sprintf(strtype, result)
 	return s
