@@ -220,6 +220,7 @@ var wm = flag.String("wm", "", "use swaymsg exec (with 'sway' argument) or hyprc
 var nameLimit = flag.Int("fslen", 80, "File Search name LENgth Limit")
 var noCats = flag.Bool("nocats", false, "Disable filtering by category")
 var noFS = flag.Bool("nofs", false, "Disable file search")
+var noPins = flag.Bool("nopins", false, "Disable pinned apps")
 var resident = flag.Bool("r", false, "Leave the program resident in memory")
 var pbExit = flag.String("pbexit", "", "command for the Exit power bar icon")
 var pbLock = flag.String("pblock", "", "command for the Lock power bar icon")
@@ -624,10 +625,12 @@ func main() {
 	pinnedWrapper.SetObjectProperty("name", "pinned-separator")
 	outerVBox.PackStart(pinnedWrapper, false, false, 0)
 
+	if !*noPins {
 	pinnedFlowBoxWrapper = gtk.NewBox(gtk.OrientationHorizontal, 0)
 	pinnedFlowBoxWrapper.SetObjectProperty("name", "pinned-wrapper")
 	outerVBox.PackStart(pinnedFlowBoxWrapper, false, false, 0)
 	pinnedFlowBox = setUpPinnedFlowBox()
+	}
 
 	resultWindow = gtk.NewScrolledWindow(nil, nil)
 	resultWindow.SetObjectProperty("name", "result-wrapper")
@@ -672,13 +675,20 @@ func main() {
 
 	// Focus 1st pinned item if any, otherwise focus 1st found app icon
 	var button gtk.Widget
-	if len(pinnedFlowBox.Children()) > 0 {
-		button = pinnedFlowBox.ChildAtIndex(0).Widget
+	if !*noPins {
+		if len(pinnedFlowBox.Children()) > 0 {
+			button = pinnedFlowBox.ChildAtIndex(0).Widget
+		} else {
+			button = appFlowBox.ChildAtIndex(0).Widget
+		}
+		if err == nil {
+			button.GrabFocus()
+		}
 	} else {
 		button = appFlowBox.ChildAtIndex(0).Widget
-	}
-	if err == nil {
-		button.GrabFocus()
+		if err == nil {
+			button.GrabFocus()
+		}
 	}
 
 	userDirsMap = mapXdgUserDirs()
@@ -817,13 +827,20 @@ func main() {
 						}
 						// focus 1st element
 						var button gtk.Widget
-						if len(pinnedFlowBox.Children()) > 0 {
-							button = pinnedFlowBox.ChildAtIndex(0).Widget
+						if !*noPins {
+							if len(pinnedFlowBox.Children()) > 0 {
+								button = pinnedFlowBox.ChildAtIndex(0).Widget
+							} else {
+								button = appFlowBox.ChildAtIndex(0).Widget
+							}
+							if err == nil {
+								button.GrabFocus()
+							}
 						} else {
 							button = appFlowBox.ChildAtIndex(0).Widget
-						}
-						if err == nil {
-							button.GrabFocus()
+							if err == nil {
+								button.GrabFocus()
+							}
 						}
 					}
 
