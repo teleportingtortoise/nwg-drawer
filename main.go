@@ -8,8 +8,6 @@ package main
 
 import (
 	"flag"
-	"github.com/diamondburned/gotk4-layer-shell/pkg/gtklayershell"
-	"github.com/expr-lang/expr"
 	"os"
 	"os/signal"
 	"path"
@@ -19,6 +17,9 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/diamondburned/gotk4-layer-shell/pkg/gtklayershell"
+	"github.com/expr-lang/expr"
+
 	"github.com/allan-simon/go-singleinstance"
 	log "github.com/sirupsen/logrus"
 
@@ -27,7 +28,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gtk/v3"
 )
 
-const version = "0.7.4"
+const version = "0.7.5"
 
 var (
 	appDirs          []string
