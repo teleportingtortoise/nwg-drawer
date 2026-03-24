@@ -5,30 +5,41 @@ Later changes override previous ones
 Overview:
 
 #nwg-drawer
+│
 ├── #main-box
+│   │
 │   ├── #close-button
+│   │
 │   ├── #search-wrapper
 │   │   └── #search
+│   │
 │   ├── #category-wrapper
 │   │   └── #category-button
+│   │
 │   ├── #pinned-separator
 │   │   └── #pinned-wrapper
 │   │       └── #pinned-box
 │   │           └── #app-button.[name (1)]
+│   │
 │   ├── #result-wrapper
+│   │   │
 │   │   └── #result-box
+│   │       │
 │   │       ├── #result-box-spanner
 │   │       ├── #app-wrapper
 │   │       │   └── #app-box
 │   │       │       └── #app-button.[name (1)]
+│   │       │
 │   │       └── #file-wrapper
 │   │           └── #files-box
 │   │               └── #files-box-inner
 │   │                   ├── #userdir-button.[name (lower case)]
 │   │                   ├── #folder-result.[directory (2)]
 │   │                   └── #file-result.[file name (2)]
+│   │ 
 │   └── #status-line-wrapper
 │       └── #status-label
+│
 └── #math-modal
     └── #math-label
 
